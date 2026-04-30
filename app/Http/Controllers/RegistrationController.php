@@ -218,6 +218,14 @@ class RegistrationController extends Controller
         Session::put('registration_token', $token);
         
         $step = $registration->current_step;
+
+        if ($step == 7) {
+            return view('registration.success', [
+                'token' => $registration->token,
+                'registration' => $registration
+            ]);
+        }
+
         if ($step == 1 && !$registration->otp_verified_at) {
             return redirect()->route('register.showStep', ['step' => 'otp']);
         }
