@@ -187,7 +187,10 @@ class RegistrationController extends Controller
             
             // Final submit
             Session::forget('registration_token');
-            return view('registration.success', ['token' => $registration->token]);
+            return view('registration.success', [
+                'token' => $registration->token,
+                'registration' => $registration
+            ]);
         }
 
         return redirect()->route('register.showStep', ['step' => $step + 1]);
