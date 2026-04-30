@@ -17,3 +17,12 @@ Route::delete('/register/diagnosis/{id}', [RegistrationController::class, 'delet
 Route::get('/register/resume', [RegistrationController::class, 'resumeForm'])->name('register.resumeForm');
 Route::post('/register/resume', [RegistrationController::class, 'resumePost'])->name('register.resumePost');
 Route::get('/register/resume/{token}', [RegistrationController::class, 'resume'])->name('register.resume');
+
+// DEIC Routes
+Route::get('/deic/login', [DeicController::class, 'loginForm'])->name('deic.login');
+Route::post('/deic/login', [DeicController::class, 'login']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/deic/dashboard', [DeicController::class, 'dashboard'])->name('deic.dashboard');
+    Route::get('/deic/profile/{id}', [DeicController::class, 'showProfile'])->name('deic.profile');
+    Route::post('/deic/logout', [DeicController::class, 'logout'])->name('deic.logout');
+});

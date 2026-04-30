@@ -25,6 +25,12 @@
         
         <div style="flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
             <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Application Status</label>
+                <div style="font-size: 1.125rem; font-weight: 700; color: var(--primary);">
+                    <span style="background: #fef3c7; color: #92400e; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem;">{{ $registration->status }}</span>
+                </div>
+            </div>
+            <div>
                 <label style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Full Name</label>
                 <div style="font-size: 1.125rem; font-weight: 700; color: var(--text-main);">{{ $registration->patient_name }}</div>
             </div>

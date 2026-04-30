@@ -16,10 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::firstOrCreate(
-            ['email' => 'test@example.com'],
+            ['email' => 'deic_tvm@hridyam.gov.in'],
             [
-                'name' => 'Test User',
+                'name' => 'DEIC User TVM',
                 'password' => bcrypt('password'),
+                'district' => 'Thiruvananthapuram',
             ]
         );
 
