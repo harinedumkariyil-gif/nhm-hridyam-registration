@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('registrations', function (Blueprint $table) {
-            $table->string('status')->default('Pending')->after('current_step');
+            $table->string('case_id')->nullable()->after('id')->unique();
+            $table->boolean('expert_opinion_required')->nullable()->after('status');
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('registrations', function (Blueprint $table) {
-            $table->dropColumn('status');
+            //
         });
     }
 };

@@ -21,6 +21,17 @@ class DatabaseSeeder extends Seeder
                 'name' => 'DEIC User TVM',
                 'password' => bcrypt('password'),
                 'district' => 'Thiruvananthapuram',
+                'role' => 'deic',
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'ped_tvm@hridyam.gov.in'],
+            [
+                'name' => 'Dr. Pediatrician TVM',
+                'password' => bcrypt('password'),
+                'district' => 'Thiruvananthapuram',
+                'role' => 'pediatrician',
             ]
         );
 

@@ -22,6 +22,9 @@ class DeicController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            if (Auth::user()->role === 'pediatrician') {
+                return redirect()->intended('pediatrician/dashboard');
+            }
             return redirect()->intended('deic/dashboard');
         }
 
@@ -42,12 +45,27 @@ class DeicController extends Controller
         $registration = Registration::with('diagnoses.diagnosisType', 'diagnoses.diagnosis', 'diagnoses.category')
             ->findOrFail($id);
         
-        // Ensure user can only see their district's patients
         if ($registration->district !== Auth::user()->district) {
             abort(403);
         }
 
         return view('deic.profile', compact('registration'));
+    }
+
+    public function verify($id)
+    {
+        $registration = Registration::findOrFail($id);
+        
+        if ($registration->district !== Auth::user()->district || $registration->current_step < 7) {
+            abort(403);
+        }
+
+        $registration->update([
+            'case_id' => 'NHM-HR-2026-' . str_pad($registration->id, 5, '0', STR_PAD_LEFT),
+            'status' => 'Forwarded to Pediatrician'
+        ]);
+
+        return redirect()->back()->with('success', 'Case verified and forwarded to district pediatrician.');
     }
 
     public function logout(Request $request)

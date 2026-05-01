@@ -82,13 +82,9 @@
             <h2 style="color: white; font-size: 1.25rem;"><i class="fa-solid fa-heart-pulse"></i> NHM Hridyam</h2>
         </div>
         <nav class="sidebar-menu">
-            <a href="{{ route('deic.dashboard') }}" class="menu-item"><i class="fa-solid fa-home"></i> Home</a>
-            <a href="#" class="menu-item active"><i class="fa-solid fa-user-check"></i> Pending Verification</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-bed-pulse"></i> Waiting for Surgery</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-stethoscope"></i> Intervention Cases</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-calendar-days"></i> Calendar</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-file-invoice"></i> Reports</a>
-            <a href="#" class="menu-item"><i class="fa-solid fa-phone"></i> Contact Support</a>
+            <a href="{{ route('pediatrician.dashboard') }}" class="menu-item"><i class="fa-solid fa-home"></i> Home</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-user-doctor"></i> Evaluated Cases</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-clipboard-check"></i> Expert Opinions</a>
         </nav>
         <div style="padding: 1rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem; color: #64748b; text-align: center;">
             © 2026 Kerala Health Services
@@ -104,7 +100,7 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <div style="text-align: right;">
                     <div style="font-size: 0.85rem; font-weight: 700;">Welcome, {{ Auth::user()->name }}</div>
-                    <div style="font-size: 0.7rem; color: var(--text-muted);">{{ Auth::user()->district }} DEIC Admin</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">{{ Auth::user()->district }} Pediatrician</div>
                 </div>
                 <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
                     {{ substr(Auth::user()->name, 0, 1) }}
@@ -119,10 +115,16 @@
                 <h1 style="font-size: 1.5rem;">Patient Profile</h1>
                 <div class="action-buttons">
                     <button class="btn-action"><i class="fa-solid fa-print"></i> Print Case</button>
-                    @if($registration->status == 'Pending' && $registration->current_step == 7)
-                    <form action="{{ route('deic.verify', $registration->id) }}" method="POST" style="display: inline;">
+                    @if($registration->status == 'Forwarded to Pediatrician')
+                    <form action="{{ route('pediatrician.markOpinion', $registration->id) }}" method="POST" style="display: inline;">
                         @csrf
-                        <button type="submit" class="btn-action" style="background: var(--success); color: white; border-color: var(--success);"><i class="fa-solid fa-check-circle"></i> Verify & Forward</button>
+                        <input type="hidden" name="opinion" value="1">
+                        <button type="submit" class="btn-action" style="background: var(--primary); color: white; border-color: var(--primary);"><i class="fa-solid fa-stethoscope"></i> Request Expert Opinion</button>
+                    </form>
+                    <form action="{{ route('pediatrician.markOpinion', $registration->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <input type="hidden" name="opinion" value="0">
+                        <button type="submit" class="btn-action" style="background: var(--success); color: white; border-color: var(--success);"><i class="fa-solid fa-check"></i> No Opinion Required</button>
                     </form>
                     @endif
                 </div>

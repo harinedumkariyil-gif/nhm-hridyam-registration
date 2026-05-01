@@ -25,5 +25,13 @@ Route::post('/deic/login', [DeicController::class, 'login']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/deic/dashboard', [DeicController::class, 'dashboard'])->name('deic.dashboard');
     Route::get('/deic/profile/{id}', [DeicController::class, 'showProfile'])->name('deic.profile');
+    Route::post('/deic/verify/{id}', [DeicController::class, 'verify'])->name('deic.verify');
     Route::post('/deic/logout', [DeicController::class, 'logout'])->name('deic.logout');
+});
+
+// Pediatrician Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pediatrician/dashboard', [\App\Http\Controllers\PediatricianController::class, 'dashboard'])->name('pediatrician.dashboard');
+    Route::get('/pediatrician/case/{id}', [\App\Http\Controllers\PediatricianController::class, 'showCase'])->name('pediatrician.case');
+    Route::post('/pediatrician/case/{id}/opinion', [\App\Http\Controllers\PediatricianController::class, 'markOpinion'])->name('pediatrician.markOpinion');
 });
