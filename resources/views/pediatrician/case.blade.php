@@ -179,6 +179,66 @@
                     </div>
 
                     <div class="card">
+                        <div class="card-header"><i class="fa-solid fa-people-roof"></i> Family & Demographics</div>
+                        <div style="padding: 1.5rem;">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Father's Name</label>
+                                    <div>{{ $registration->father_name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Mother's Name</label>
+                                    <div>{{ $registration->mother_name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>RCH ID</label>
+                                    <div>{{ $registration->rch_id ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <div>{{ $registration->email ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Living In</label>
+                                    <div>{{ $registration->living_in ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Economic Status</label>
+                                    <div>{{ $registration->bpl_apl ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Religion/Caste</label>
+                                    <div>{{ $registration->caste ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><i class="fa-solid fa-baby"></i> Birth History</div>
+                        <div style="padding: 1.5rem;">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Birth Weight</label>
+                                    <div>{{ $registration->birth_weight ?? 'N/A' }} kg</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Delivery Type</label>
+                                    <div>{{ $registration->delivery_type ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Antenatal Diagnosis</label>
+                                    <div>{{ $registration->antenatal_diagnosis ? 'Yes' : 'No' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Consanguinity</label>
+                                    <div>{{ $registration->consanguinity ? 'Yes' : 'No' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <div class="card-header"><i class="fa-solid fa-heart-circle-check"></i> Present Clinical Status</div>
                         <table class="data-table">
                             <tr><th>Parameter</th><th>Value</th><th>Status</th></tr>

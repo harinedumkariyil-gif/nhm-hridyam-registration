@@ -119,6 +119,11 @@
                 <h1 style="font-size: 1.5rem;">Patient Profile</h1>
                 <div class="action-buttons">
                     <button class="btn-action"><i class="fa-solid fa-print"></i> Print Case</button>
+                    <button class="btn-action"><i class="fa-solid fa-notes-medical"></i> Diagnosis</button>
+                    @if($registration->status != 'Pending')
+                    <button class="btn-action"><i class="fa-solid fa-file-signature"></i> Treatment Plan</button>
+                    @endif
+                    <button class="btn-action"><i class="fa-solid fa-clock-rotate-left"></i> Timeline</button>
                     @if($registration->status == 'Pending' && $registration->current_step == 7)
                     <form action="{{ route('deic.verify', $registration->id) }}" method="POST" style="display: inline;">
                         @csrf
@@ -177,6 +182,66 @@
                     </div>
 
                     <div class="card">
+                        <div class="card-header"><i class="fa-solid fa-people-roof"></i> Family & Demographics</div>
+                        <div style="padding: 1.5rem;">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Father's Name</label>
+                                    <div>{{ $registration->father_name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Mother's Name</label>
+                                    <div>{{ $registration->mother_name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>RCH ID</label>
+                                    <div>{{ $registration->rch_id ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <div>{{ $registration->email ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Living In</label>
+                                    <div>{{ $registration->living_in ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Economic Status</label>
+                                    <div>{{ $registration->bpl_apl ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Religion/Caste</label>
+                                    <div>{{ $registration->caste ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><i class="fa-solid fa-baby"></i> Birth History</div>
+                        <div style="padding: 1.5rem;">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Birth Weight</label>
+                                    <div>{{ $registration->birth_weight ?? 'N/A' }} kg</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Delivery Type</label>
+                                    <div>{{ $registration->delivery_type ?? 'N/A' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Antenatal Diagnosis</label>
+                                    <div>{{ $registration->antenatal_diagnosis ? 'Yes' : 'No' }}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Consanguinity</label>
+                                    <div>{{ $registration->consanguinity ? 'Yes' : 'No' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <div class="card-header"><i class="fa-solid fa-heart-circle-check"></i> Present Clinical Status</div>
                         <table class="data-table">
                             <tr><th>Parameter</th><th>Value</th><th>Status</th></tr>
@@ -217,15 +282,29 @@
                         </div>
                     </div>
 
+                    @if($registration->status != 'Pending')
                     <div class="card">
                         <div class="card-header"><i class="fa-solid fa-user-doctor"></i> Expert Opinion</div>
                         <div style="padding: 1rem 1.5rem;">
-                            <label style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;">HIGHEST SUGGESTED CATEGORY</label>
+                            @if($registration->expert_opinion_required)
+                            <label style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;">EXPERT OPINION REQUIRED</label>
                             <div style="background: #eff6ff; color: #1d4ed8; padding: 0.5rem; border-radius: 6px; font-weight: 800; text-align: center; margin-top: 0.5rem; border: 1px solid #bfdbfe;">
-                                CATEGORY II
+                                YES
                             </div>
+                            @elseif($registration->expert_opinion_required === 0)
+                            <label style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;">EXPERT OPINION REQUIRED</label>
+                            <div style="background: #dcfce7; color: #166534; padding: 0.5rem; border-radius: 6px; font-weight: 800; text-align: center; margin-top: 0.5rem; border: 1px solid #bbf7d0;">
+                                NO
+                            </div>
+                            @else
+                            <label style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;">STATUS</label>
+                            <div style="background: #f1f5f9; color: #475569; padding: 0.5rem; border-radius: 6px; font-weight: 800; text-align: center; margin-top: 0.5rem; border: 1px solid #cbd5e1;">
+                                PENDING REVIEW
+                            </div>
+                            @endif
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
