@@ -96,6 +96,11 @@ class RegistrationController extends Controller
         $registration = Registration::where('token', $token)->firstOrFail();
 
         if ($step == 2) {
+            $request->validate([
+                'father_name' => 'required|string|max:255',
+                'mother_name' => 'required|string|max:255',
+                'email' => 'nullable|email',
+            ]);
             $registration->update([
                 'rch_id' => $request->rch_id,
                 'father_name' => $request->father_name,
@@ -104,6 +109,15 @@ class RegistrationController extends Controller
                 'current_step' => 3
             ]);
         } elseif ($step == 3) {
+            $request->validate([
+                'address_line_1' => 'required',
+                'post_office' => 'required',
+                'pincode' => 'required|digits:6',
+                'district' => 'required',
+                'living_in' => 'required',
+                'local_body' => 'required',
+                'hospital_name' => 'required',
+            ]);
             $registration->update([
                 'address_line_1' => $request->address_line_1,
                 'address_line_2' => $request->address_line_2,
@@ -120,22 +134,32 @@ class RegistrationController extends Controller
                 'current_step' => 4
             ]);
         } elseif ($step == 4) {
+            $request->validate([
+                'bpl_apl' => 'required',
+                'ration_card_no' => 'required',
+                'aadhaar_no' => 'required|digits:12',
+                'delivery_type' => 'required',
+            ]);
             $registration->update([
                 'bpl_apl' => $request->bpl_apl,
                 'sub_category' => $request->sub_category,
                 'ration_card_no' => $request->ration_card_no,
                 'annual_income' => $request->annual_income,
                 'caste' => $request->caste,
-                'aadhaar_no' => $request->aadhaar_no ? Crypt::encryptString($request->aadhaar_no) : null,
+                'aadhaar_no' => Crypt::encryptString($request->aadhaar_no),
                 'delivery_type' => $request->delivery_type,
                 'birth_weight' => $request->birth_weight,
                 'order_of_birth' => $request->order_of_birth,
-                'consanguinity' => $request->has('consanguinity') && $request->consanguinity == '1',
-                'antenatal_diagnosis' => $request->has('antenatal_diagnosis') && $request->antenatal_diagnosis == '1',
-                'other_illness_mother' => $request->has('other_illness_mother') && $request->other_illness_mother == '1',
+                'consanguinity' => $request->has('consanguinity'),
+                'antenatal_diagnosis' => $request->has('antenatal_diagnosis'),
+                'other_illness_mother' => $request->has('other_illness_mother'),
                 'current_step' => 5
             ]);
         } elseif ($step == 5) {
+            $request->validate([
+                'child_blood_group' => 'required',
+                'current_weight_kg' => 'required|numeric',
+            ]);
             $registration->update([
                 'child_blood_group' => $request->child_blood_group,
                 'mother_blood_group' => $request->mother_blood_group,
@@ -148,10 +172,10 @@ class RegistrationController extends Controller
         } elseif ($step == 6) {
             $registration->update([
                 'baby_color' => $request->baby_color,
-                'clinical_symptoms' => $request->has('clinical_symptoms') && $request->clinical_symptoms == '1',
+                'clinical_symptoms' => $request->has('clinical_symptoms'),
                 'saturation_maintained' => $request->saturation_maintained,
-                'cynotic_spells' => $request->has('cynotic_spells') && $request->cynotic_spells == '1',
-                'sweating_forehead' => $request->has('sweating_forehead') && $request->sweating_forehead == '1',
+                'cynotic_spells' => $request->has('cynotic_spells'),
+                'sweating_forehead' => $request->has('sweating_forehead'),
                 'murmur' => $request->murmur,
                 'heart_rate' => $request->heart_rate,
                 'respiratory_rate' => $request->respiratory_rate,
@@ -172,20 +196,27 @@ class RegistrationController extends Controller
                 return back()->with('error', 'Please add at least one diagnosis to continue.');
             }
 
+            $request->validate([
+                'medical_report_path' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'aadhaar_path' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'declaration' => 'required|accepted',
+            ]);
+
             if ($request->hasFile('medical_report_path')) {
-                $registration->update(['medical_report_path' => $request->file('medical_report_path')->store('reports')]);
+                $registration->update(['medical_report_path' => $request->file('medical_report_path')->store('reports', 'public')]);
             }
             if ($request->hasFile('aadhaar_path')) {
-                $registration->update(['aadhaar_path' => $request->file('aadhaar_path')->store('reports')]);
+                $registration->update(['aadhaar_path' => $request->file('aadhaar_path')->store('reports', 'public')]);
             }
             if ($request->hasFile('birth_certificate_path')) {
-                $registration->update(['birth_certificate_path' => $request->file('birth_certificate_path')->store('reports')]);
+                $registration->update(['birth_certificate_path' => $request->file('birth_certificate_path')->store('reports', 'public')]);
             }
             if ($request->hasFile('ration_card_path')) {
-                $registration->update(['ration_card_path' => $request->file('ration_card_path')->store('reports')]);
+                $registration->update(['ration_card_path' => $request->file('ration_card_path')->store('reports', 'public')]);
             }
             
             // Final submit
+            $registration->update(['status' => 'Pending']); // Set status on final submit
             Session::forget('registration_token');
             return view('registration.success', [
                 'token' => $registration->token,
@@ -241,9 +272,9 @@ class RegistrationController extends Controller
 
         $request->validate([
             'diagnosis_date' => 'required|date',
-            'diagnosis_type_id' => 'required',
-            'diagnosis_id' => 'required',
-            'category_id' => 'required',
+            'diagnosis_type_id' => 'required|exists:diagnosis_types,id',
+            'diagnosis_id' => 'required|exists:diagnoses,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         \App\Models\RegistrationDiagnosis::create([

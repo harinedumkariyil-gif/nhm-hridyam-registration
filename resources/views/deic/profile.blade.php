@@ -131,7 +131,9 @@
                     <div class="card">
                         <div class="card-header"><i class="fa-solid fa-user-nurse"></i> Patient Information</div>
                         <div class="patient-info">
-                            <img src="{{ asset('profile.jpg') }}" class="patient-photo" alt="Patient Photo">
+                            <div class="patient-photo" style="display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: #94a3b8; background: #e2e8f0;">
+                                <i class="fa-solid fa-baby"></i>
+                            </div>
                             <div class="info-grid">
                                 <div class="info-item">
                                     <label>Case ID</label>

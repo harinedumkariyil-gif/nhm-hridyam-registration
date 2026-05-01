@@ -124,13 +124,27 @@
 
         <div class="form-group">
             <label>Diagnosis</label>
-            <select name="diagnosis_id" required>
+            <input type="text" id="diagnosisSearch" placeholder="Search diagnosis..." style="margin-bottom: 0.5rem; padding: 0.5rem; font-size: 0.875rem;">
+            <select name="diagnosis_id" id="diagnosisSelect" required>
                 <option value="">Select Diagnosis</option>
                 @foreach($diagnoses as $d)
                     <option value="{{ $d->id }}">{{ $d->name }}</option>
                 @endforeach
             </select>
         </div>
+
+        <script>
+            document.getElementById('diagnosisSearch').addEventListener('input', function(e) {
+                const search = e.target.value.toLowerCase();
+                const select = document.getElementById('diagnosisSelect');
+                const options = select.getElementsByTagName('option');
+                
+                for (let i = 1; i < options.length; i++) {
+                    const text = options[i].innerText.toLowerCase();
+                    options[i].style.display = text.includes(search) ? '' : 'none';
+                }
+            });
+        </script>
 
         <div class="form-group">
             <label>Category</label>

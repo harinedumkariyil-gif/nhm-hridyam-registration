@@ -17,8 +17,8 @@
     
     <div style="padding: 2rem; display: flex; gap: 2rem; align-items: start;">
         <div style="flex-shrink: 0;">
-            <div style="width: 150px; height: 180px; border-radius: 12px; overflow: hidden; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #f1f5f9;">
-                <img src="{{ asset('profile.jpg') }}" alt="Profile Photo" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="width: 150px; height: 180px; border-radius: 12px; overflow: hidden; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 4rem;">
+                <i class="fa-solid fa-baby"></i>
             </div>
             <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">PATIENT PHOTO</p>
         </div>
