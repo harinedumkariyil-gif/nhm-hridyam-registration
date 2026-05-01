@@ -313,7 +313,7 @@
         </a>
         <div class="nav-links">
             <a href="{{ route('register.resumeForm') }}" style="color: var(--text-muted); text-decoration: none; font-weight: 500;">Resume Application</a>
-            <a href="/login" class="btn-outline">Official Login</a>
+            <a href="{{ route('deic.login') }}" class="btn-outline">Official Login</a>
             <a href="{{ route('register.index') }}" class="btn-solid">Public Registration</a>
         </div>
     </nav>
